@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -35,8 +36,8 @@ public class Post {
     @Column(name = "priority", length = 50)
     private String priority;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "post_id")
-    @Column(name = "images")
     private List<PostImages> images;
 
     @Column(name = "verified_by_admin")
@@ -48,9 +49,8 @@ public class Post {
     @Column(name = "comment_count")
     private int commentCount = 0;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "post_id")
-    @Column(name = "location")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "location_id")
     private Location location;
 
     public Post() {
