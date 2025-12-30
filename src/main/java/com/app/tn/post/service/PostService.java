@@ -1,8 +1,12 @@
 package com.app.tn.post.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.app.tn.exceptions.NotAuthorizedExceptions;
@@ -15,6 +19,18 @@ public class PostService {
 
     @Autowired
     private PostRepository postRepository;
+
+    // post paginations
+    public Map<String, Object> postWithPagination(int page, int size) {
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        Page<Post> posts = postRepository.findAll(pageRequest);
+        Map<String, Object> response = new HashMap<>();
+        response.put("posts", posts.getContent());
+        response.put("total", posts.getTotalElements());
+        return response;
+    }
 
     // get
     public List<Post> getAllPosts() {

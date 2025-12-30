@@ -1,6 +1,8 @@
 package com.app.tn.post.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import com.app.tn.post.entity.Post;
 import com.app.tn.post.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,13 @@ public class PostController {
     @GetMapping
     public List<Post> getMethodName() {
         return postService.getAllPosts();
+    }
+
+    // pagination
+    @GetMapping("/pagination")
+    public Map<String, Object> postWithPagination(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "0") int size) {
+        return postService.postWithPagination(page, size);
     }
 
 }
