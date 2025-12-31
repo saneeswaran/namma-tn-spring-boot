@@ -1,43 +1,32 @@
-package com.app.tn.post.entity;
+package com.app.tn.dto;
 
 import java.util.List;
 
+import com.app.tn.post.entity.Location;
+import com.app.tn.post.entity.PostImages;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
-@Entity
-@Table(name = "posts")
-public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+public class PostDto {
+
     private Integer id;
 
-    @Column(name = "user_id", nullable = false)
     @NotBlank(message = "userId is required")
     private String userId;
 
-    @Column(name = "title", nullable = false, length = 100)
     @NotBlank(message = "title is required")
     private String title;
 
-    @Column(name = "description", length = 1000)
     @NotBlank(message = "description is required")
     private String description;
 
-    @Column(name = "additional_information", length = 1000)
     private String additionalInformation;
 
-    @Column(name = "priority", nullable = false)
     @NotBlank(message = "priority is required")
     private String priority;
 
@@ -58,14 +47,14 @@ public class Post {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    public Post() {
+    public PostDto() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -148,5 +137,4 @@ public class Post {
     public void setLocation(Location location) {
         this.location = location;
     }
-
 }
