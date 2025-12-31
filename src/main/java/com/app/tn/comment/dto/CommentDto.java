@@ -1,4 +1,4 @@
-package com.app.tn.dto;
+package com.app.tn.comment.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public class CommentDto {
     private String commentId;
     @NotNull(message = "postId is required")
-    private String postId;
+    private Integer postId;
     @NotNull(message = "userId is required")
     private String userId;
     @NotBlank(message = "comment is required")
@@ -30,11 +30,11 @@ public class CommentDto {
         this.commentId = commentId;
     }
 
-    public String getPostId() {
+    public Integer getPostId() {
         return postId;
     }
 
-    public void setPostId(String postId) {
+    public void setPostId(Integer postId) {
         this.postId = postId;
     }
 

@@ -1,10 +1,15 @@
 package com.app.tn.comment.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import com.app.tn.comment.dto.CommentDto;
 import com.app.tn.comment.entity.Comment;
 import com.app.tn.comment.repository.CommentRepository;
 import com.app.tn.exceptions.NotAuthorizedExceptions;
@@ -120,19 +125,62 @@ public class CommentService {
     }
 
     // get comments with paginations
-    public List<Comment> getComments(Integer postId, int page, int size) {
+    public Map<String, Object> getComments(int page, int size, Integer postId) {
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        List<Comment> comments = commentRepository.findByPostId(postId, pageRequest).getContent();
-        return comments;
+        Page<Comment> commentPage;
+
+        if (postId != null) {
+            commentPage = commentRepository.findByPostId(postId, pageRequest);
+        } else {
+            commentPage = commentRepository.findAll(pageRequest);
+        }
+
+        List<CommentDto> commentDtos = commentPage.getContent()
+                .stream()
+                .map(this::convertCommentDtos)
+                .toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("comments", commentDtos);
+        response.put("totalElements", commentPage.getTotalElements());
+        response.put("totalPages", commentPage.getTotalPages());
+
+        return response;
     }
 
     // get reply comments with pagination
 
-    public List<Comment> getReplyComments(String parentCommentId, int page, int size) {
+    public Map<String, Object> getReplyComments(String parentCommentId, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        List<Comment> comments = commentRepository.findByParentCommentId(parentCommentId, pageRequest).getContent();
-        return comments;
+        Page<Comment> commentPage = commentRepository.findByParentCommentId(parentCommentId, pageRequest);
+
+        List<CommentDto> commentDtos = commentPage.getContent()
+                .stream()
+                .map(this::convertCommentDtos)
+                .toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("comments", commentDtos);
+        response.put("totalElements", commentPage.getTotalElements());
+        response.put("totalPages", commentPage.getTotalPages());
+        response.put("currentPage", page);
+
+        return response;
+    }
+
+    public CommentDto convertCommentDtos(Comment comment) {
+        CommentDto commentDto = new CommentDto();
+        commentDto.setCommentId(comment.getCommentId());
+        commentDto.setUserId(comment.getUserId());
+        commentDto.setPostId(comment.getPostId());
+        commentDto.setComment(comment.getComment());
+        commentDto.setParentCommentId(comment.getParentCommentId());
+        commentDto.setCommentCount(comment.getCommentCount());
+        commentDto.setHasReplies(comment.isHasReplies());
+        commentDto.setUserName(comment.getUserName());
+        commentDto.setCreatedAt(comment.getCreatedAt());
+        return commentDto;
     }
 }

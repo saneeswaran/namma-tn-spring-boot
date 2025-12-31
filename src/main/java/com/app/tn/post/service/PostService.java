@@ -9,9 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.app.tn.dto.PostDto;
 import com.app.tn.exceptions.NotAuthorizedExceptions;
 import com.app.tn.exceptions.ResourcesNotFoundException;
+import com.app.tn.post.dto.PostDto;
 import com.app.tn.post.entity.Post;
 import com.app.tn.post.repository.PostRepository;
 

@@ -1,4 +1,4 @@
-package com.app.tn.dto;
+package com.app.tn.post.dto;
 
 import java.util.List;
 
