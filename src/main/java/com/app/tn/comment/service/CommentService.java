@@ -1,6 +1,9 @@
 package com.app.tn.comment.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.app.tn.comment.entity.Comment;
 import com.app.tn.comment.repository.CommentRepository;
@@ -103,5 +106,33 @@ public class CommentService {
         }
 
         return commentRepository.save(comment);
+    }
+
+    public Comment updateChildComment(Comment newComment, String userId) {
+        Comment comment = commentRepository.findById(newComment.getCommentId())
+                .orElseThrow(() -> new ResourcesNotFoundException("Post not found"));
+
+        if (!comment.getUserId().equals(userId)) {
+            throw new NotAuthorizedExceptions("You are not authorized to update this comment");
+        }
+
+        return commentRepository.save(comment);
+    }
+
+    // get comments with paginations
+    public List<Comment> getComments(Integer postId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        List<Comment> comments = commentRepository.findByPostId(postId, pageRequest).getContent();
+        return comments;
+    }
+
+    // get reply comments with pagination
+
+    public List<Comment> getReplyComments(String parentCommentId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        List<Comment> comments = commentRepository.findByParentCommentId(parentCommentId, pageRequest).getContent();
+        return comments;
     }
 }
