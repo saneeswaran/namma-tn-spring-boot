@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.app.tn.exceptions.NotAuthorizedExceptions;
@@ -14,6 +16,7 @@ import com.app.tn.exceptions.ResourcesNotFoundException;
 import com.app.tn.post.dto.PostDto;
 import com.app.tn.post.entity.Post;
 import com.app.tn.post.repository.PostRepository;
+import com.app.tn.post.specification.PostSpecification;
 
 @Service
 public class PostService {
@@ -115,6 +118,22 @@ public class PostService {
         postDto.setLocation(post.getLocation());
         postDto.setImages(post.getImages());
         return postDto;
+    }
+
+    // filters
+
+    public Page<Post> filterPosts(
+            String name,
+            String priority,
+            String description,
+            Pageable pageable) {
+
+        Specification<Post> spec = Specification
+                .where(PostSpecification.hasName(name))
+                .and(PostSpecification.hasPriority(priority))
+                .and(PostSpecification.hasDescription(description));
+
+        return postRepository.findAll(spec, pageable);
     }
 
 }

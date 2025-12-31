@@ -6,6 +6,8 @@ import java.util.Map;
 import com.app.tn.post.entity.Post;
 import com.app.tn.post.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +58,19 @@ public class PostController {
     public Map<String, Object> postWithPagination(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "0") int size) {
         return postService.postWithPagination(page, size);
+    }
+
+    // filter
+    @GetMapping("/filter")
+    public Page<Post> filterWithParams(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String priority,
+            @RequestParam(required = false) String description,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        PageRequest pageable = PageRequest.of(page, size);
+        return postService.filterPosts(name, priority, description, pageable);
     }
 
 }
