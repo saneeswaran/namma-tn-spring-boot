@@ -80,7 +80,7 @@ public class CommentController {
     }
 
     // get comments by postId with pagination
-    @GetMapping
+    @GetMapping("/comments/{postId}")
     public Map<String, Object> getComments(
             @RequestParam Integer postId,
             @RequestParam(defaultValue = "0") int page,
@@ -90,7 +90,7 @@ public class CommentController {
     }
 
     // get reply comments with pagination
-    @GetMapping("/child/{id}")
+    @GetMapping("/child/{parentCommentId}")
     public Map<String, Object> getReplyComments(
             @PathVariable String id,
             @RequestParam(defaultValue = "0") int page,
