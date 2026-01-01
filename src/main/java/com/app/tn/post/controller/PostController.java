@@ -49,7 +49,7 @@ public class PostController {
 
     // get
     @GetMapping
-    public List<Post> getMethodName() {
+    public List<Post> getPosts() {
         return postService.getAllPosts();
     }
 

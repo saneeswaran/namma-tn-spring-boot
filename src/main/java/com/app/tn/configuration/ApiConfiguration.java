@@ -13,7 +13,8 @@ public class ApiConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
         http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authz -> authz.requestMatchers("/api/v1/post/**").permitAll()
+                .authorizeHttpRequests(authz -> authz.requestMatchers("/api/v2/posts/pagination").permitAll()
+                        .requestMatchers("/api/v1/post/**").permitAll()
                         .requestMatchers("/comments/{postId}").permitAll()
                         .requestMatchers("/child/{parentCommentId}").permitAll()
                         .requestMatchers("/comment/**").permitAll().anyRequest().authenticated());
