@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ApiConfiguration {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz.requestMatchers("/api/v2/posts/pagination").permitAll()
                         .requestMatchers("/api/v1/post/**").permitAll()
