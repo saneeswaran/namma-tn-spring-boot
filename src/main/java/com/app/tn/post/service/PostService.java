@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.app.tn.exceptions.NotAuthorizedExceptions;
 import com.app.tn.exceptions.ResourcesNotFoundException;
-import com.app.tn.post.dto.PostDto;
 import com.app.tn.post.entity.Post;
 import com.app.tn.post.repository.PostRepository;
 import com.app.tn.post.specification.PostSpecification;
@@ -30,9 +29,8 @@ public class PostService {
         PageRequest pageRequest = PageRequest.of(page, size);
 
         Page<Post> posts = postRepository.findAll(pageRequest);
-        List<PostDto> convertToDtoPosts = posts.getContent().stream().map(post -> convertToDto(post)).toList();
         Map<String, Object> response = new HashMap<>();
-        response.put("posts", convertToDtoPosts);
+        response.put("posts", posts.getContent());
         response.put("total", posts.getTotalElements());
         return response;
     }
@@ -104,21 +102,21 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public PostDto convertToDto(Post post) {
-        PostDto postDto = new PostDto();
-        postDto.setId(post.getId());
-        postDto.setUserId(post.getUserId());
-        postDto.setTitle(post.getTitle());
-        postDto.setDescription(post.getDescription());
-        postDto.setAdditionalInformation(post.getAdditionalInformation());
-        postDto.setPriority(post.getPriority());
-        postDto.setCommentCount(post.getCommentCount());
-        postDto.setVerifiedByAdmin(post.isVerifiedByAdmin());
-        postDto.setBreakingNews(post.isBreakingNews());
-        postDto.setLocation(post.getLocation());
-        postDto.setImages(post.getImages());
-        return postDto;
-    }
+    // public PostDto convertToDto(Post post) {
+    // PostDto postDto = new PostDto();
+    // postDto.setId(post.getId());
+    // postDto.setUserId(post.getUserId());
+    // postDto.setTitle(post.getTitle());
+    // postDto.setDescription(post.getDescription());
+    // postDto.setAdditionalInformation(post.getAdditionalInformation());
+    // postDto.setPriority(post.getPriority());
+    // postDto.setCommentCount(post.getCommentCount());
+    // postDto.setVerifiedByAdmin(post.isVerifiedByAdmin());
+    // postDto.setBreakingNews(post.isBreakingNews());
+    // postDto.setLocation(post.getLocation());
+    // postDto.setImages(post.getImages());
+    // return postDto;
+    // }
 
     // filters
 

@@ -14,6 +14,7 @@ public class ApiConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz.requestMatchers("/api/v2/posts/pagination").permitAll()
+                        .requestMatchers("/api/v1/post/create").permitAll()
                         .requestMatchers("/api/v1/post/**").permitAll()
                         .requestMatchers("/comments/{postId}").permitAll()
                         .requestMatchers("/child/{parentCommentId}").permitAll()

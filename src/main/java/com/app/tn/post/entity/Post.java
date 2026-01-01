@@ -1,49 +1,39 @@
 package com.app.tn.post.entity;
 
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
 
     @Column(name = "user_id", nullable = false)
-    @NotBlank(message = "userId is required")
+    @NotBlank
     private String userId;
 
-    @Column(name = "title", nullable = false, length = 100)
-    @NotBlank(message = "title is required")
+    @Column(nullable = false, length = 100)
+    @NotBlank
     private String title;
 
-    @Column(name = "description", length = 1000)
-    @NotBlank(message = "description is required")
+    @Column(nullable = false, length = 1000)
+    @NotBlank
     private String description;
 
     @Column(name = "additional_information", length = 1000)
     private String additionalInformation;
 
-    @Column(name = "priority", nullable = false)
-    @NotBlank(message = "priority is required")
+    @Column(nullable = false)
+    @NotBlank
     private String priority;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "post_id")
-    private List<PostImages> images;
+    private List<PostImage> images;
 
     @Column(name = "verified_by_admin")
     private boolean verifiedByAdmin = false;
@@ -61,11 +51,11 @@ public class Post {
     public Post() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -109,11 +99,11 @@ public class Post {
         this.priority = priority;
     }
 
-    public List<PostImages> getImages() {
+    public List<PostImage> getImages() {
         return images;
     }
 
-    public void setImages(List<PostImages> images) {
+    public void setImages(List<PostImage> images) {
         this.images = images;
     }
 
